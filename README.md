@@ -26,14 +26,6 @@ To publish this library, ensure you are in a virtualenv, and install 'devpi-clie
 pip install devpi-client
 ```
 
-Log into the server as user 'gymnos' (see google drive 'Shared Credentials' for password)
-
-```bash
-> devpi login gymnos
-password for user gymnos:
-logged in 'gymnos', credentials valid for 10.00 hours
-```
-
 Choose which repository to upload to:
 
 1) Stable (cannot overwrite uploaded versions!)
@@ -44,6 +36,13 @@ Choose which repository to upload to:
     ```bash
     devpi use http://thefirstjedi.asuscomm.com:3141/gymnos/staging
     ```
+Log into the server as user 'gymnos' (see google drive 'Shared Credentials' for password)
+
+```bash
+> devpi login gymnos
+password for user gymnos:
+logged in 'gymnos', credentials valid for 10.00 hours
+```
 
 Ensure you are in the GymnosCamera directory and upload using devpi:
 
