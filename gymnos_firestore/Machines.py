@@ -54,7 +54,8 @@ def machine_exists(db, gym_ref, machine_name):
     else:
         return False
 
-def insert_machine_time(db, gym_id, machine_id, start, end):
+
+def insert_machine_time(db, gym_id, machine_name, machine_id, start, end):
     """
     Inserts a row of machine usage
 
@@ -77,6 +78,7 @@ def insert_machine_time(db, gym_id, machine_id, start, end):
     except StopIteration:
         print("No doc found, creating new date")
         data = {
+            MACHINE_NAME: machine_name,
             MACHINE_ID: machine_id,
             USAGE_DATE: today,
             USAGE_TIME_ARRAY: []
