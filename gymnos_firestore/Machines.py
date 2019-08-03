@@ -22,22 +22,37 @@ def create_machine(db, gym_id, machine_json):
     """
     Creates a machine using the specified json file
     """
-    gym_ref = gyms.get_gym_ref(db, gym_id)
-    new_machine_ref = gym_ref.collection(MACHINE_COLLECTION).document()
-    json = {
-        "MachineID": new_machine_ref.id,
-        "Name": "Bench",
-        "Location": {
-            "TopX": 0.10546875,
-            "LeftY": 0.23046875,
-            "BottomX": 0.37109375,
-            "RightY": 0.59765625
-        }
-    }
+    gym_ref = gyms.get_gym_by_id(db, gym_id)
+    machine_name = machine_json[MACHINE_NAME]
+    if not machine_exists(db, gym_ref, machine_name):
+        new_machine_ref = gym_ref.collection(MACHINE_COLLECTION).document()
+        doc_id = new_machine_ref.id
+        machine_json[MACHINE_ID] = doc_id
 
-    new_machine_ref.set(json)
-    print("Machine created successfully")
+        new_machine_ref.set(machine_json)
+        print("Machine created successfully")
 
+        return doc_id
+    else:
+        print("This Machine has already been created")
+
+def machine_exists(db, gym_ref, machine_name):
+    """
+    Checks to see if a machine exists
+
+    :return: : True if that machine is already in database
+    """
+    query_ref = gym_ref.collection(MACHINE_COLLECTION).where(u'Name', u'==', machine_name)
+    docs = query_ref.get()
+
+    machines = []
+    for doc in docs:
+        machines.append(doc)
+
+    if len(machines) > 0:
+        return True
+    else:
+        return False
 
 def insert_machine_time(db, gym_id, machine_id, start, end):
     """
