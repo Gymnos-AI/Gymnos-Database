@@ -16,6 +16,7 @@ MACHINE_LOC_RIGHTY = u'RightY'
 USAGE_COLLECTION = u'Usage'
 USAGE_DATE = u"Date"
 USAGE_TIME_ARRAY = u"Times"
+USAGE_TOTAL_TIME = u"TotalTime"
 
 
 def create_machine(db, gym_id, machine_json):
@@ -54,7 +55,6 @@ def machine_exists(db, gym_ref, machine_name):
     else:
         return False
 
-
 def insert_machine_time(db, gym_id, machine_name, machine_id, start, end):
     """
     Inserts a row of machine usage
@@ -72,20 +72,26 @@ def insert_machine_time(db, gym_id, machine_name, machine_id, start, end):
     today = date.today().strftime("%Y/%m/%d")
     todays_doc = usage_ref.where(MACHINE_ID, u'==', machine_id).where(USAGE_DATE, u'==', today).limit(1)
     machine_time = u'{}#{}'.format(start, end)
+    time_used = end - start
     try:
         doc_ref = next(todays_doc.get()).reference
-        doc_ref.update({u'Times': firestore.ArrayUnion([machine_time])})
+        doc_ref.update({
+            USAGE_TOTAL_TIME: firestore.Increment(time_used),
+            USAGE_TIME_ARRAY: firestore.ArrayUnion([machine_time])})
     except StopIteration:
         print("No doc found, creating new date")
         data = {
             MACHINE_NAME: machine_name,
             MACHINE_ID: machine_id,
             USAGE_DATE: today,
-            USAGE_TIME_ARRAY: []
+            USAGE_TIME_ARRAY: [],
+            USAGE_TOTAL_TIME: 0
         }
 
         doc_ref = usage_ref.document()
         # Create new entry
         doc_ref.set(data)
         # Insert machine time
-        doc_ref.update({u'Times': firestore.ArrayUnion([machine_time])})
+        doc_ref.update({
+            USAGE_TOTAL_TIME: firestore.Increment(time_used),
+            USAGE_TIME_ARRAY: firestore.ArrayUnion([machine_time])})
