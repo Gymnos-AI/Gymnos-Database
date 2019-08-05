@@ -2,6 +2,9 @@ import gymnos_firestore.Gyms as gyms
 from google.cloud import firestore
 from datetime import date
 
+# Gym collection keys
+GYM_COLLECTION = u'Gyms'
+
 # Machine collection keys
 MACHINE_COLLECTION = u'Machines'
 MACHINE_ID = u'MachineID'
@@ -25,7 +28,8 @@ def create_machine(db, gym_id, machine_json):
     """
     gym_ref = gyms.get_gym_by_id(db, gym_id)
     machine_name = machine_json[MACHINE_NAME]
-    if not machine_exists(db, gym_ref, machine_name):
+    exists, machine_id = machine_exists(gym_ref, machine_name)
+    if not exists:
         new_machine_ref = gym_ref.collection(MACHINE_COLLECTION).document()
         doc_id = new_machine_ref.id
         machine_json[MACHINE_ID] = doc_id
@@ -33,17 +37,19 @@ def create_machine(db, gym_id, machine_json):
         new_machine_ref.set(machine_json)
         print("Machine created successfully")
 
-        return doc_id
+        return True, doc_id
     else:
-        print("This Machine has already been created")
+        print("Machine already exists, returning Machine ID")
+        return False, machine_id
 
-def machine_exists(db, gym_ref, machine_name):
+
+def machine_exists(gym_ref, machine_name):
     """
     Checks to see if a machine exists
 
     :return: : True if that machine is already in database
     """
-    query_ref = gym_ref.collection(MACHINE_COLLECTION).where(u'Name', u'==', machine_name)
+    query_ref = gym_ref.collection(MACHINE_COLLECTION).where(u'Name', u'==', machine_name).limit(1)
     docs = query_ref.get()
 
     machines = []
@@ -51,9 +57,11 @@ def machine_exists(db, gym_ref, machine_name):
         machines.append(doc)
 
     if len(machines) > 0:
-        return True
+        machine_id = machines[0].reference.id
+        return True, machine_id
     else:
-        return False
+        return False, None
+
 
 def insert_machine_time(db, gym_id, machine_name, machine_id, start, end):
     """
@@ -95,3 +103,13 @@ def insert_machine_time(db, gym_id, machine_name, machine_id, start, end):
         doc_ref.update({
             USAGE_TOTAL_TIME: firestore.Increment(time_used),
             USAGE_TIME_ARRAY: firestore.ArrayUnion([machine_time])})
+
+
+def update_machine_location(db, gym_id, machine_id, new_location):
+    """
+    Updates the location of a machine
+    """
+    machine_ref = db.collection(GYM_COLLECTION).document(gym_id).collection(MACHINE_COLLECTION).document(machine_id)
+    machine_ref.update({MACHINE_LOC: new_location})
+
+    print("Machine location updated")
