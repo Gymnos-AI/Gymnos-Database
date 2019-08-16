@@ -7,7 +7,7 @@ pip install gymnosfirestoreapi===0.1.0 --trusted-host thefirstjedi.asuscomm.com 
 ```
 To get the latest version:
 ```
- pip install GymnosFirestoreAPI --upgrade --trusted-host thefirstjedi.asuscomm.com --index-url http://thefirstjedi.asuscomm.com:3141/gymnos/staging/+simple
+pip install GymnosFirestoreAPI --upgrade --trusted-host thefirstjedi.asuscomm.com --index-url http://thefirstjedi.asuscomm.com:3141/gymnos/staging/+simple
 ```
 To uninstall this library, simply run `pip uninstall gymnosfirestoreapi`
 
@@ -48,7 +48,7 @@ password for user gymnos:
 logged in 'gymnos', credentials valid for 10.00 hours
 ```
 
-Ensure you are in the GymnosCamera directory and upload using devpi:
+Ensure you are in the root directory of this repository and upload using devpi:
 
 ```bash
 devpi upload
