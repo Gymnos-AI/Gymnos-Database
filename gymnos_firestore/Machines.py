@@ -85,11 +85,13 @@ def insert_machine_time(db, gym_id, machine_name, machine_id, start, end):
     try:
         doc_ref = next(todays_doc.get()).reference
         doc_ref.update({
+            MACHINE_OPEN: True,
             USAGE_TOTAL_TIME: firestore.Increment(time_used),
             USAGE_TIME_ARRAY: firestore.ArrayUnion([machine_time])})
     except StopIteration:
         print("No doc found, creating new date")
         data = {
+            MACHINE_OPEN: True,
             MACHINE_NAME: machine_name,
             MACHINE_ID: machine_id,
             USAGE_DATE: today,
