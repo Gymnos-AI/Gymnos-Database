@@ -9,6 +9,7 @@ GYM_COLLECTION = u'Gyms'
 MACHINE_COLLECTION = u'Machines'
 MACHINE_ID = u'MachineID'
 MACHINE_NAME = u'Name'
+MACHINE_OPEN = u'Open'
 MACHINE_LOC = u'Location'
 MACHINE_LOC_TOPX = u'TopX'
 MACHINE_LOC_LEFTY = u'LeftY'
@@ -29,7 +30,7 @@ def create_machine(db, gym_id, machine_json):
     gym_ref = gyms.get_gym_by_id(db, gym_id)
     machine_name = machine_json[MACHINE_NAME]
     exists, machine_id = machine_exists(gym_ref, machine_name)
-    if not exists:
+    if exists is False:
         new_machine_ref = gym_ref.collection(MACHINE_COLLECTION).document()
         doc_id = new_machine_ref.id
         machine_json[MACHINE_ID] = doc_id
@@ -113,3 +114,8 @@ def update_machine_location(db, gym_id, machine_id, new_location):
     machine_ref.update({MACHINE_LOC: new_location})
 
     print("Machine location updated")
+
+
+def update_status(db, gym_id, machine_id, status):
+    machine_ref = db.collection(GYM_COLLECTION).document(gym_id).collection(MACHINE_COLLECTION).document(machine_id)
+    machine_ref.update({MACHINE_OPEN: status})
