@@ -3,6 +3,8 @@ from matchbox import models
 # Usage collection keys
 USAGE_COLLECTION = 'Usage'
 USAGE_DATE = 'date'
+USAGE_MACHINE_ID = 'machine_id'
+USAGE_NAME = 'name'
 USAGE_TIME_ARRAY = 'times'
 USAGE_TOTAL_TIME = 'total_time'
 
