@@ -2,16 +2,15 @@ from matchbox import models
 
 # Gym collection keys
 GYM_COLLECTION = 'Gyms'
-GYM_ID = 'GymID'
-GYM_NAME = 'Name'
-GYM_LOCATION = 'Location'
+GYM_NAME = 'name'
+GYM_LAST_CHECK_IN = 'last_check_in'
+GYM_LOCATION = 'location'
 
 
 class Gyms(models.Model):
-    gym_id = models.TextField(column_name='GymID')
-    name = models.TextField(column_name='Name')
-    last_check_in = models.TimeStampField(column_name='Last_Check_In')
-    location = models.TextField(column_name='Location')
+    name = models.TextField()
+    last_check_in = models.TimeStampField(default='0001-01-01T00:00:00Z')
+    location = models.TextField()
 
     class Meta:
-        collection_name = 'Gyms'
+        collection_name = GYM_COLLECTION

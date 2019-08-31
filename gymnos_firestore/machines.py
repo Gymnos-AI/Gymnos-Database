@@ -1,31 +1,20 @@
 from matchbox import models
-from matchbox.queries.error import DocumentDoesNotExists
-
-import gymnos_firestore.gyms as gyms
-from google.cloud import firestore
-from datetime import date
-
-# Gym collection keys
-from gymnos_firestore import usage
-
-GYM_COLLECTION = 'Gyms'
 
 # Machine collection keys
 MACHINE_COLLECTION = 'Machines'
-MACHINE_ID = 'MachineID'
-MACHINE_NAME = 'Name'
-MACHINE_LOC = 'Location'
-MACHINE_LOC_TOPX = 'TopX'
-MACHINE_LOC_LEFTY = 'LeftY'
-MACHINE_LOC_BOTTOMX = 'BottomX'
-MACHINE_LOC_RIGHTY = 'RightY'
+MACHINE_LOC = 'location'
+MACHINE_LOC_TOPX = 'top_x'
+MACHINE_LOC_LEFTY = 'left_y'
+MACHINE_LOC_BOTTOMX = 'bottom_x'
+MACHINE_LOC_RIGHTY = 'right_y'
+MACHINE_NAME = 'name'
+MACHINE_OPEN = 'open'
 
 
 class Machines(models.Model):
-    machine_id = models.TextField(column_name='MachineID')
-    name = models.TextField(column_name='Name')
-    location = models.MapField(column_name='Location')
-    open = models.BooleanField(column_name='Open', default=True)
+    location = models.MapField()
+    name = models.TextField()
+    open = models.BooleanField(default=True)
 
     class Meta:
-        collection_name = 'Machines'
+        collection_name = MACHINE_COLLECTION
