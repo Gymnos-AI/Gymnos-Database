@@ -1,3 +1,5 @@
+import datetime
+
 from matchbox import models
 
 # Gym collection keys
@@ -9,7 +11,7 @@ GYM_LOCATION = 'location'
 
 class Gyms(models.Model):
     name = models.TextField()
-    last_check_in = models.TimeStampField(default='0001-01-01T00:00:00Z')
+    last_check_in = models.TimeStampField(default=datetime.datetime.utcnow())
     location = models.TextField()
 
     class Meta:
