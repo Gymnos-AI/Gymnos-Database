@@ -10,6 +10,7 @@ USAGE_TOTAL_TIME = 'total_time'
 
 
 class Usage(models.Model):
+
     date = models.TextField()
     machine_id = models.TextField()
     name = models.TextField()

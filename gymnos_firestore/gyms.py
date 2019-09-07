@@ -10,6 +10,7 @@ GYM_LOCATION = 'location'
 
 
 class Gyms(models.Model):
+
     name = models.TextField()
     last_check_in = models.TimeStampField(default=datetime.datetime.utcnow())
     location = models.TextField()

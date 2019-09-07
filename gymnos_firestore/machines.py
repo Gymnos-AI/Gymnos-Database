@@ -1,3 +1,4 @@
+from gymnos_firestore import camera
 from matchbox import models
 
 # Machine collection keys
@@ -12,6 +13,8 @@ MACHINE_OPEN = 'open'
 
 
 class Machines(models.Model):
+
+    camera = models.ReferenceField(ref_model=camera.Camera)
     location = models.MapField()
     name = models.TextField()
     open = models.BooleanField(default=True)
