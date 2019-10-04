@@ -1,2 +1,7 @@
+
+--trusted-host thefirstjedi.asuscomm.com
+--index-url http://thefirstjedi.asuscomm.com:3141/gymnos/stable/+simple
+--extra-index-url http://thefirstjedi.asuscomm.com:3141/gymnos/staging/+simple
+
 firebase-admin==2.17.0
-matchbox-orm==0.2.2
+matchbox-orm==0.2.4
